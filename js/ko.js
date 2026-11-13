@@ -5,7 +5,7 @@
     "Registered family name":"등록된 이름","Continue":"계속하기","Welcome":"환영합니다","Switch player":"플레이어 바꾸기",
     "attempts today":"오늘 남은 도전","today’s best":"오늘 최고점","overall":"종합 점수",
     "An official attempt is used as soon as the server starts the session. Leaving or refreshing does not restore it.":"서버에서 공식 게임을 시작하는 순간 도전 기회가 사용됩니다. 나가거나 새로고침해도 복구되지 않습니다.",
-    "Play official round":"공식 게임 시작","Practice — unlimited":"연습하기 — 무제한","How to play":"게임 방법",
+    "Play official round":"게임 시작","Practice — unlimited":"연습하기 — 무제한","How to play":"게임 방법",
     "tap once":"한 번 누르기","gold star":"황금 별","tap 3×":"세 번 누르기","avoid!":"누르지 마세요!","photo star":"사진 별",
     "45 seconds. Targets speed up. Misses cost nothing.":"제한 시간은 45초예요. 점점 빨라지며, 놓쳐도 감점은 없습니다.",
     "Get ready!":"준비하세요!","Something went wrong":"문제가 발생했어요","Retry":"다시 시도","Full scoreboard":"전체 순위",
