@@ -12,7 +12,7 @@ function route_(op,p){if(op==='status')return publicStatus_();if(op==='lookup')r
 function json_(v){return ContentService.createTextOutput(JSON.stringify(v)).setMimeType(ContentService.MimeType.JSON)}
 function book_(){const id=PropertiesService.getScriptProperties().getProperty('SHEET_ID');if(!id)throw Error('Set SHEET_ID in Script Properties.');return SpreadsheetApp.openById(id)}
 function initializeSheets(){const ss=book_();Object.keys(HEADERS).forEach(n=>{let s=ss.getSheetByName(n);if(!s)s=ss.insertSheet(n);if(s.getLastRow()===0)s.appendRow(HEADERS[n]);else HEADERS[n].forEach((h,i)=>{if(!s.getRange(1,i+1).getValue())s.getRange(1,i+1).setValue(h)})});const s=ss.getSheetByName('Settings');const keys=rows_(s).map(r=>r.Key);[['START_KST','2026-12-01'],['CLOSE_UTC',CFG.CLOSE],['RULES_VERSION',CFG.VERSION]].forEach(r=>{if(!keys.includes(r[0]))s.appendRow(r)});return 'Initialized without deleting existing data.'}
-function rows_(sheet){const v=sheet.getDataRange().getValues();if(v.length<2)return[];const h=v[0];return v.slice(1).filter(r=>r.some(x=>x!=='')).map((r,n)=>{const o={_row:n+2};h.forEach((x,i)=>o[x]=r[i]);return o})}
+function rows_(sheet){const v=sheet.getDataRange().getValues();if(v.length<2)return[];const h=v[0];return v.slice(1).map((r,n)=>{if(!r.some(x=>x!==''))return null;const o={_row:n+2};h.forEach((x,i)=>{let value=r[i];if(value instanceof Date){const dateOnly=x==='ChallengeDate'||x==='Seed'||(x==='Value'&&r[0]==='START_KST');value=dateOnly?dateKst_(value):value.toISOString()}o[x]=value});return o}).filter(Boolean)}
 function literal_(v){v=String(v??'');return /^[=+\-@]/.test(v)?"'"+v:v}
 function norm_(v){return String(v||'').trim().toLocaleLowerCase('en-US')}
 function now_(){return new Date()}function dateKst_(d){return Utilities.formatDate(d,CFG.TZ,'yyyy-MM-dd')}
@@ -32,3 +32,4 @@ function standings_(){const ss=book_(),ps=rows_(ss.getSheetByName('Players')),rs
 function finalize_(){const lock=LockService.getScriptLock();lock.waitLock(10000);try{const ss=book_(),s=ss.getSheetByName('FinalStandings');if(s.getLastRow()>1)return;const eligible=new Set(rows_(ss.getSheetByName('Results')).filter(r=>truth_(r.Valid)).map(r=>r.PlayerId)),at=now_().toISOString();standings_().filter(x=>eligible.has(x.id)).forEach((x,i)=>s.appendRow([i+1,x.id,literal_(x.name),x.score,x.single,x.reached,at]))}finally{lock.releaseLock()}}
 function finalRows_(){return rows_(book_().getSheetByName('FinalStandings')).map(r=>({rank:+r.Rank,id:r.PlayerId,name:r.DisplayName,score:+r.OverallScore,single:+r.BestRound}))}
 function final_(){if(now_().getTime()<Date.parse(CFG.CLOSE))throw Error('Final standings are not available yet.');finalize_();return{ok:true,serverNow:now_().toISOString(),standings:finalRows_()}}
+
