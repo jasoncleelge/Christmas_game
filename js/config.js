@@ -1,6 +1,6 @@
 window.GAME_CONFIG={
-  apiUrl:"", // Paste the deployed Apps Script /exec URL here.
-  mockMode:true,
+  apiUrl:"https://script.google.com/macros/s/AKfycbyX22AP0ygvNbS5LacsKfJMBKfzjzM6IsgObADt3dLFLn_utt2QPHx3129sP1aW6pjP/exec",
+  mockMode:false,
   rulesVersion:"2026.1",
   closeUtc:"2026-12-19T10:00:00.000Z",
   roundMs:45000,
